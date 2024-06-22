@@ -1,3 +1,4 @@
 air.toml
-./tmp
 .idea
+tmp
+vendor

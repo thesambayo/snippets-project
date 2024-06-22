@@ -13,10 +13,22 @@ func routes(app *config.Application) http.Handler {
 	// any routes that matches /static/a/b/...
 	mux.Handle("GET /static/{filePath...}", http.StripPrefix("/static", fileServer))
 
-	mux.HandleFunc("GET /{$}", home(app))
-	mux.HandleFunc("GET /snippet/view/{id}", snippetView(app))
-	mux.HandleFunc("GET /snippet/create", snippetCreateForm(app))
-	mux.HandleFunc("POST /snippet/create", snippetCreatePost(app))
+	mux.Handle(
+		"GET /{$}",
+		app.SessionManager.LoadAndSave(home(app)),
+	)
+	mux.Handle(
+		"GET /snippet/view/{id}",
+		app.SessionManager.LoadAndSave(snippetView(app)),
+	)
+	mux.Handle(
+		"GET /snippet/create",
+		app.SessionManager.LoadAndSave(snippetCreateForm(app)),
+	)
+	mux.Handle(
+		"POST /snippet/create",
+		app.SessionManager.LoadAndSave(snippetCreatePost(app)),
+	)
 
 	return recoverFromPanic(logRequest(secureHeaders(mux), app), app)
 }
