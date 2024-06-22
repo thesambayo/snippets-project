@@ -53,9 +53,13 @@ func main() {
 	}
 
 	server := &http.Server{
-		Addr:     *addr,
-		ErrorLog: app.ErrorLog,
-		Handler:  routes(app),
+		Addr:           *addr,
+		ErrorLog:       app.ErrorLog,
+		Handler:        routes(app),
+		IdleTimeout:    time.Minute,
+		ReadTimeout:    5 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 524288,
 	}
 
 	app.InfoLog.Printf("Starting server on %s", *addr)
