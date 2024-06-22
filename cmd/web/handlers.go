@@ -94,45 +94,6 @@ func snippetCreatePost(app *config.Application) http.HandlerFunc {
 			app.ClientError(responseWriter, http.StatusBadRequest)
 			return
 		}
-		// above replaces below := manual extraction of form values
-		// manual extraction begins
-		// First we call r.ParseForm() which adds any data in POST request bodies
-		// to the r.PostForm map. This also works in the same way for PUT and PATCH
-		// requests. If there are any errors, we use our app.ClientError() helper to
-		// send a 400 Bad Request response to the user.
-		// err := request.ParseForm()
-		// if err != nil {
-		// 	app.ClientError(responseWriter, http.StatusBadRequest)
-		// 	return
-		// }
-
-		// fmt.Println(request.PostForm) => map[content:[] expires:[365] title:[]]
-		// PostForm is a map of string to string slices: map[string][]string
-		// Use the r.PostForm.Get() method to retrieve the title and content from the r.PostForm map.
-
-		// The r.PostForm.Get() method always returns the form data as a *string*.
-		// However, we're expecting our expires value to be a number, and want to
-		// represent it in our Go code as an integer. So we need to manually covert
-		// the form data to an integer using strconv.Atoi(), and we send a 400 Bad
-		// Request response if the conversion fails.
-
-		// Create an instance of the snippetCreateFormData struct containing the values
-		// from the form and an empty map for any validation errors.
-		//form := createSnippetFormData{
-		//	Title:   request.PostForm.Get("title"),
-		//	Content: request.PostForm.Get("content"),
-		//	Expires: expires,
-		//}
-		// expires, err := strconv.Atoi(request.PostForm.Get("expires"))
-		//
-		//
-		// var form createSnippetFormData
-		// err = app.DecodePostForm(request, &form)
-		// if err != nil {
-		// 	app.ClientError(responseWriter, http.StatusBadRequest)
-		// 	return
-		// }
-		// // manual extraction ends
 
 		// Because the Validator type is embedded by the snippetCreateForm struct,
 		// we can call CheckField() directly on it to execute our validation checks.
