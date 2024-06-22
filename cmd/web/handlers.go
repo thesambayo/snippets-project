@@ -37,7 +37,7 @@ func home(app *config.Application) http.HandlerFunc {
 		}
 
 		// Create an instance of a TemplateData struct holding the data.
-		data := app.NewTemplateData()
+		data := app.NewTemplateData(request)
 		data.Snippets = snippets
 		app.Render(responseWriter, http.StatusOK, "home.html", data)
 	}
@@ -45,6 +45,7 @@ func home(app *config.Application) http.HandlerFunc {
 
 func snippetView(app *config.Application) http.HandlerFunc {
 	return func(responseWriter http.ResponseWriter, request *http.Request) {
+
 		id, err := strconv.Atoi(request.PathValue("id"))
 		if err != nil || id < 1 {
 			app.NotFound(responseWriter)
@@ -65,7 +66,7 @@ func snippetView(app *config.Application) http.HandlerFunc {
 			return
 		}
 
-		data := app.NewTemplateData()
+		data := app.NewTemplateData(request)
 		data.Snippet = snippet
 
 		app.Render(responseWriter, http.StatusOK, "view.html", data)
@@ -74,7 +75,7 @@ func snippetView(app *config.Application) http.HandlerFunc {
 
 func snippetCreateForm(app *config.Application) http.HandlerFunc {
 	return func(responseWriter http.ResponseWriter, request *http.Request) {
-		data := app.NewTemplateData()
+		data := app.NewTemplateData(request)
 		// Initialize a new createSnippetForm instance and pass it to the template.
 		// Notice how this is also a great opportunity to set any default or
 		// 'initial' values for the form --- here we set the initial value forthe snippet expiry to 365 days.
@@ -127,7 +128,7 @@ func snippetCreatePost(app *config.Application) http.HandlerFunc {
 		// field. Note that we use the HTTP status code 422 Unprocessable Entity
 		// when sending the response to indicate that there was a validation error.
 		if !form.Valid() {
-			data := app.NewTemplateData()
+			data := app.NewTemplateData(request)
 			data.Form = form
 			app.Render(responseWriter, http.StatusUnprocessableEntity, "create.html", data)
 			return
@@ -138,6 +139,7 @@ func snippetCreatePost(app *config.Application) http.HandlerFunc {
 			app.ServerError(responseWriter, err)
 			return
 		}
+		app.SessionManager.Put(request.Context(), "flash", "Snippert successfully created!")
 		http.Redirect(responseWriter, request, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
 	}
 }

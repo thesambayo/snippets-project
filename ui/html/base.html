@@ -22,7 +22,13 @@
         </header>
         <!-- Invoke the navigation template -->
         {{block "nav" .}} {{end}}
-        <main>{{template "main" .}}</main>
+        <main>
+            <!-- Display the flash message if one exists -->
+            {{with .Flash}}
+            <div class="flash">{{.}}</div>
+            {{end}}
+            {{template "main" .}}
+        </main>
         <footer>
             <!-- Update the footer to include the current year -->
             Powered by <a href="https://golang.org/">Go</a> in {{.CurrentYear}}
