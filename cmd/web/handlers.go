@@ -143,3 +143,34 @@ func snippetCreatePost(app *config.Application) http.HandlerFunc {
 		http.Redirect(responseWriter, request, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
 	}
 }
+
+func userSignup(app *config.Application) http.HandlerFunc {
+	fmt.Println("signing up man")
+	return func(responseWriter http.ResponseWriter, request *http.Request) {
+		fmt.Fprintln(responseWriter, "display a user signup form")
+	}
+}
+
+func userSignupPost(app *config.Application) http.HandlerFunc {
+	return func(responseWriter http.ResponseWriter, request *http.Request) {
+		fmt.Fprintln(responseWriter, "signup user")
+	}
+}
+
+func userLogin(app *config.Application) http.HandlerFunc {
+	return func(responseWriter http.ResponseWriter, request *http.Request) {
+		fmt.Fprintln(responseWriter, "display a user login form")
+	}
+}
+
+func userLoginPost(app *config.Application) http.HandlerFunc {
+	return func(responseWriter http.ResponseWriter, request *http.Request) {
+		fmt.Fprintln(responseWriter, "login user")
+	}
+}
+
+func userLogoutPost(app *config.Application) http.HandlerFunc {
+	return func(responseWriter http.ResponseWriter, request *http.Request) {
+		fmt.Fprintln(responseWriter, "user logout")
+	}
+}

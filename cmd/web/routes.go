@@ -30,5 +30,10 @@ func routes(app *config.Application) http.Handler {
 		app.SessionManager.LoadAndSave(snippetCreatePost(app)),
 	)
 
+	mux.Handle(
+		"GET /user/signup",
+		app.SessionManager.LoadAndSave(userSignup(app)),
+	)
+
 	return recoverFromPanic(logRequest(secureHeaders(mux), app), app)
 }
